@@ -103,8 +103,8 @@ MonoBehaviour:
   bounceTimesText: {fileID: 1374831243567758068}
   isLaunchBall: 1
   launched: 0
-  vel: 10
-  launchVel: 20
+  vel: 9
+  launchVel: 16
   x: -1
   y: 1
 --- !u!50 &1357117410824738258

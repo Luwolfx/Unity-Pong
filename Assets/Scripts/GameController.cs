@@ -201,11 +201,24 @@ public class GameController : MonoBehaviour
         mousePos.y = mousePos.y - objectPos.y;
 
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+
         float maxAngle = normalAngle + 45f;
         float minAngle = normalAngle - 45f;
 
-        if((angle > minAngle) && (angle < maxAngle))
-            p.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        if(normalAngle >= 180)
+        {
+            if((angle < -135) && (angle > -180))
+                p.transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, angle*-1));
+
+            if((angle > minAngle) && (angle < maxAngle))
+                p.transform.rotation = Quaternion.Euler(new Vector3(180f, 0f, angle*-1));
+        }
+        else
+        {
+            if((angle > minAngle) && (angle < maxAngle))
+                p.transform.rotation = Quaternion.Euler(new Vector3(p.transform.rotation.eulerAngles.x, 0f, angle));
+        }
     }
 
     public void Ball_Destroyed(string thePlayer, int damage)

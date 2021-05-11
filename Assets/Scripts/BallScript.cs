@@ -65,6 +65,7 @@ public class BallScript : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
 
+        print("collided");
         switch(c.gameObject.tag)
         {
             case "Up_Border":
@@ -84,7 +85,7 @@ public class BallScript : MonoBehaviour
                 Destroy(gameObject);
             break;
             case "Player1":
-                if(canBounseTimes > 0)
+                if(canBounseTimes > 0 || canBounseTimes < 0)
                 {
                     canBounseTimes--;
                     x = 1;
@@ -96,7 +97,7 @@ public class BallScript : MonoBehaviour
                 }
             break;
             case "Player2":
-                if(canBounseTimes > 0)
+                if(canBounseTimes > 0 || canBounseTimes < 0)
                 {
                     canBounseTimes--;
                     x = -1;
@@ -116,7 +117,7 @@ public class BallScript : MonoBehaviour
         float oldy = transform.position.y;
         transform.Translate(Vector2.right * launchVel * Time.deltaTime);
         if(oldx < transform.position.x) x = 1; else if(oldx > transform.position.x) x = -1;
-        if(oldy < transform.position.y) x = 1; else if(oldy > transform.position.y) x = -1;
+        if(oldy < transform.position.y) y = 1; else if(oldy > transform.position.y) y = -1;
     }
 
     private void AutoMoveBall()
