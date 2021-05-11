@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour
     public GameObject[] balls;
     public GameObject ball;
     private int ballInUse = 0;
+    private int ballSelected = 0;
     #endregion
     
     #endregion
@@ -70,6 +71,7 @@ public class GameController : MonoBehaviour
 
             //SETA A BOLA COMO NULA!
             ball = null;
+            ballInUse = ballSelected = 0;
 
             //DESMARCA O JOGADOR ATUAL
             if(player1.playerText.color != Color.white) player1.playerText.color = Color.white;
@@ -104,7 +106,7 @@ public class GameController : MonoBehaviour
                 //PERMITE A MIRA DO JOGADOR ATUAL
                 Player_Rotation(player1.Object, 0f);
 
-                //
+                //SPAWNA A BOLA!
                 if(ball == null)
                 {
                     ball = Instantiate(balls[ballInUse], new Vector2(player1.ballLaunchPosition.position.x, 
@@ -112,6 +114,13 @@ public class GameController : MonoBehaviour
                                                                      player1.ballLaunchPosition.rotation);
 
                     ball.transform.parent = player1.ballLaunchPosition;
+                    break;
+                }
+                //SE TEM OUTRA BOLA SELECIONADA DESTROI A ATUAL
+                if((ball != null) && (ballInUse != ballSelected))
+                {
+                    ballInUse = ballSelected;
+                    Destroy(ball);
                     break;
                 }
 
@@ -166,6 +175,7 @@ public class GameController : MonoBehaviour
             #endregion
             #region GS_BIG
             case Game_Status.BALL_IN_GAME:
+                //ATUALIZA O TEXTO DO STATUS ATUAL!
                 if(!statusText[3].activeInHierarchy)
                     Change_Text(3);
             break;
@@ -206,6 +216,11 @@ public class GameController : MonoBehaviour
 
         //Seta o status como None
         status = Game_Status.NONE;
+    }
+
+    public void Change_Ball(int b)
+    {
+        ballSelected = b;
     }
 
     private void Change_Text(int i)

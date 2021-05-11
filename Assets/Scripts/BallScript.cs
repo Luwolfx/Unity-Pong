@@ -33,7 +33,7 @@ public class BallScript : MonoBehaviour
     
     void Update()
     {
-        bounceTimesText.text = ""+canBounseTimes;
+        if(canBounseTimes >= 0) bounceTimesText.text = ""+canBounseTimes;
         switch(GameController._Instance.status)
         {
             case GameController.Game_Status.PLAYER1_PLAY:
@@ -89,7 +89,7 @@ public class BallScript : MonoBehaviour
                     canBounseTimes--;
                     x = 1;
                 }
-                else
+                else if(canBounseTimes == 0)
                 {
                     GameController._Instance.Ball_Destroyed("Player1", defenseDamage);
                     Destroy(gameObject);
@@ -101,7 +101,7 @@ public class BallScript : MonoBehaviour
                     canBounseTimes--;
                     x = -1;
                 }
-                else
+                else if(canBounseTimes == 0)
                 {
                     GameController._Instance.Ball_Destroyed("Player2", defenseDamage);
                     Destroy(gameObject);

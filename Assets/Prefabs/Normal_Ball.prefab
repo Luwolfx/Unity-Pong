@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1357117410824738258}
   - component: {fileID: 1357117410824738259}
   m_Layer: 0
-  m_Name: Bouncing_Ball
+  m_Name: Normal_Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: de3150af333071b4584b3e1b5624911e, type: 3}
-  m_Color: {r: 1, g: 0.9728835, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d29b3b0d63a89f41add19a515c1abb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defenseDamage: 10
-  fullDamage: 20
-  canBounseTimes: 10
+  defenseDamage: 4
+  fullDamage: 8
+  canBounseTimes: 0
   bounceTimesText: {fileID: 1374831243567758068}
   isLaunchBall: 1
   launched: 0
