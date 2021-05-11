@@ -85,7 +85,7 @@ public class GameController : MonoBehaviour
                     playerRound = Players.PLAYER2;
                     status = Game_Status.PLAYER2_PLAY;
                 }
-                if(playerRound == Players.PLAYER2)
+                else if(playerRound == Players.PLAYER2)
                 {
                     playerRound = Players.PLAYER1;
                     status = Game_Status.PLAYER1_PLAY;
@@ -149,7 +149,7 @@ public class GameController : MonoBehaviour
                 //PERMITE A MIRA DO JOGADOR ATUAL
                 Player_Rotation(player2.Object, 180f);
 
-                //
+                //SPAWNA A BOLA!
                 if(ball == null)
                 {
                     ball = Instantiate(balls[ballInUse], new Vector2(player2.ballLaunchPosition.position.x, 
@@ -157,6 +157,13 @@ public class GameController : MonoBehaviour
                                                                      player2.ballLaunchPosition.rotation);
                                                                      
                     ball.transform.parent = player2.ballLaunchPosition;
+                    break;
+                }
+                //SE TEM OUTRA BOLA SELECIONADA DESTROI A ATUAL
+                if((ball != null) && (ballInUse != ballSelected))
+                {
+                    ballInUse = ballSelected;
+                    Destroy(ball);
                     break;
                 }
 
