@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BallScript : MonoBehaviour
 {
     #region VARIABLES
     public static BallScript _Instance;
+
+    [Header("Damage Vars")]
+    public int defenseDamage;
+    public int fullDamage;
+    public int canBounseTimes;
+    public TMP_Text bounceTimesText;
 
     [Header("Launch Vars")]
     public bool isLaunchBall;
@@ -13,17 +20,20 @@ public class BallScript : MonoBehaviour
 
     [Header("Move Vars")]
     public float vel;
+    public float launchVel;
     public int x = -1;
     public int y = 1;
     #endregion
 
     private void Awake() 
     {
+        //Set the Instance!
         if(_Instance == null) _Instance = this; else Destroy(this);
     }
-
+    
     void Update()
     {
+        bounceTimesText.text = ""+canBounseTimes;
         switch(GameController._Instance.status)
         {
             case GameController.Game_Status.PLAYER1_PLAY:
@@ -58,25 +68,44 @@ public class BallScript : MonoBehaviour
         switch(c.gameObject.tag)
         {
             case "Up_Border":
+                if(canBounseTimes > 0) canBounseTimes--;
                 y = -1;
             break;
             case "Down_Border":
+                if(canBounseTimes > 0) canBounseTimes--;
                 y = 1;
             break;
             case "P1_Border":
-                x = 1;
+                GameController._Instance.Ball_Destroyed("Player1", fullDamage);
+                Destroy(gameObject);
             break;
             case "P2_Border":
-                x = -1;
+                GameController._Instance.Ball_Destroyed("Player2", fullDamage);
+                Destroy(gameObject);
             break;
             case "Player1":
-                x = 1;
+                if(canBounseTimes > 0)
+                {
+                    canBounseTimes--;
+                    x = 1;
+                }
+                else
+                {
+                    GameController._Instance.Ball_Destroyed("Player1", defenseDamage);
+                    Destroy(gameObject);
+                }
             break;
             case "Player2":
-                x = -1;
-            break;
-            default:
-
+                if(canBounseTimes > 0)
+                {
+                    canBounseTimes--;
+                    x = -1;
+                }
+                else
+                {
+                    GameController._Instance.Ball_Destroyed("Player2", defenseDamage);
+                    Destroy(gameObject);
+                }
             break;
         }
     }
@@ -85,7 +114,7 @@ public class BallScript : MonoBehaviour
     {
         float oldx = transform.position.x;
         float oldy = transform.position.y;
-        transform.Translate(Vector2.right * vel * Time.deltaTime);
+        transform.Translate(Vector2.right * launchVel * Time.deltaTime);
         if(oldx < transform.position.x) x = 1; else if(oldx > transform.position.x) x = -1;
         if(oldy < transform.position.y) x = 1; else if(oldy > transform.position.y) x = -1;
     }

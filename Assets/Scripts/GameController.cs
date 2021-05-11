@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     public PlayerVars player2;
     #endregion
     
+    #region Game_Status
     public enum Game_Status
     {
         NONE,
@@ -29,11 +30,22 @@ public class GameController : MonoBehaviour
     }
     public Game_Status status;
     public GameObject[] statusText;
+    public GameObject[] balls;
+    public GameObject ball;
+    private int ballInUse = 0;
+    #endregion
+    
     #endregion
 
     private void Awake() 
     {
+        //Set the instance!
         if(_Instance == null) _Instance = this; else Destroy(this);
+    }
+    void Start() 
+    {
+        //Seta a vida inicial!
+        player1.life = player2.life = 100;
     }
 
     void Update()
@@ -41,15 +53,30 @@ public class GameController : MonoBehaviour
         Game_Status_Gameplay();
     }
 
+
     void Game_Status_Gameplay()
     {
         switch(status)
         {
+            #region GS_NONE
             case Game_Status.NONE:
+            //ATUALIZA OS TEXTOS DA HUD
             if(!statusText[0].activeInHierarchy)
+            {
                 Change_Text(0);
+                player1.lifeText.text = "Vida: "+player1.life+"%";
+                player2.lifeText.text = "Vida: "+player2.life+"%";
+            }
 
-            if(Input.GetButtonDown("Fire1"))
+            //SETA A BOLA COMO NULA!
+            ball = null;
+
+            //DESMARCA O JOGADOR ATUAL
+            if(player1.playerText.color != Color.white) player1.playerText.color = Color.white;
+            if(player2.playerText.color != Color.white) player2.playerText.color = Color.white;
+
+            //AO APERTAR ESPAÇO SETA O NOVO JOGADOR ATUAL E MUDA PARA O STATUS DO JOGADOR ATUAL!
+            if(Input.GetButtonDown("Jump"))
             {
                 if(playerRound == Players.PLAYER1)
                 {
@@ -64,36 +91,85 @@ public class GameController : MonoBehaviour
             }
 
             break;
+            #endregion
+            #region GS_P1
             case Game_Status.PLAYER1_PLAY:
+                //ATUALIZA O TEXTO DO STATUS ATUAL!
                 if(!statusText[1].activeInHierarchy)
                     Change_Text(1);
 
+                //MARCA O JOGADOR ATUAL!
+                if(player1.playerText.color != Color.yellow) player1.playerText.color = Color.yellow;
+
+                //PERMITE A MIRA DO JOGADOR ATUAL
                 Player_Rotation(player1.Object, 0f);
 
-                if(Input.GetButtonDown("Fire1"))
+                //
+                if(ball == null)
                 {
+                    ball = Instantiate(balls[ballInUse], new Vector2(player1.ballLaunchPosition.position.x, 
+                                                                     player1.ballLaunchPosition.position.y), 
+                                                                     player1.ballLaunchPosition.rotation);
+
+                    ball.transform.parent = player1.ballLaunchPosition;
+                    break;
+                }
+
+                if(Input.GetButtonDown("Jump"))
+                {
+                    ball.transform.parent = null;
+                    ball.transform.rotation = Quaternion.Euler(player1.Object.transform.rotation.eulerAngles.x, 
+                                                               player1.Object.transform.rotation.eulerAngles.y, 
+                                                               player1.Object.transform.rotation.eulerAngles.z);
+
                     BallScript._Instance.launched = true;
                     status = Game_Status.BALL_IN_GAME;
                     player1.Object.transform.rotation = Quaternion.Euler(0f,0f,0f);
                 }
             break;
+            #endregion
+            #region GS_P2
             case Game_Status.PLAYER2_PLAY:
+                //ATUALIZA O TEXTO DO STATUS ATUAL!
                 if(!statusText[2].activeInHierarchy)
                     Change_Text(2);
 
+                //MARCA O JOGADOR ATUAL!
+                if(player1.playerText.color != Color.yellow) player1.playerText.color = Color.yellow;
+
+                //PERMITE A MIRA DO JOGADOR ATUAL
                 Player_Rotation(player2.Object, 180f);
 
-                if(Input.GetButtonDown("Fire1"))
+                //
+                if(ball == null)
                 {
+                    ball = Instantiate(balls[ballInUse], new Vector2(player2.ballLaunchPosition.position.x, 
+                                                                     player2.ballLaunchPosition.position.y), 
+                                                                     player2.ballLaunchPosition.rotation);
+                                                                     
+                    ball.transform.parent = player2.ballLaunchPosition;
+                    break;
+                }
+
+                if(Input.GetButtonDown("Jump"))
+                {
+                    ball.transform.parent = null;
+                    ball.transform.rotation = Quaternion.Euler(player2.Object.transform.rotation.eulerAngles.x, 
+                                                               player2.Object.transform.rotation.eulerAngles.y, 
+                                                               player2.Object.transform.rotation.eulerAngles.z);
+
                     BallScript._Instance.launched = true;
                     status = Game_Status.BALL_IN_GAME;
                     player2.Object.transform.rotation = Quaternion.Euler(0f,0f,0f);
                 }
             break;
+            #endregion
+            #region GS_BIG
             case Game_Status.BALL_IN_GAME:
                 if(!statusText[3].activeInHierarchy)
                     Change_Text(3);
             break;
+            #endregion
         }
     }
 
@@ -115,20 +191,21 @@ public class GameController : MonoBehaviour
             p.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    public void Ball_Destroyed()
+    public void Ball_Destroyed(string thePlayer, int damage)
     {
-        status = Game_Status.NONE;
+        //Danifica o Jogador!
+        switch(thePlayer)
+        {
+            case "Player1":
+                player1.life -= damage;
+            break;
+            case "Player2":
+                player2.life -= damage;
+            break;
+        }
 
-        if(playerRound == Players.PLAYER1)
-        {
-            playerRound = Players.PLAYER2;
-            status = Game_Status.PLAYER2_PLAY;
-        }
-        else
-        {
-            playerRound = Players.PLAYER1;
-            status = Game_Status.PLAYER1_PLAY;
-        }
+        //Seta o status como None
+        status = Game_Status.NONE;
     }
 
     private void Change_Text(int i)
@@ -145,5 +222,8 @@ public class GameController : MonoBehaviour
 public class PlayerVars
 {
     public GameObject Object;
+    public Transform ballLaunchPosition;
+    public int life = 100;
+    public TMP_Text playerText;
     public TMP_Text lifeText;
 }
