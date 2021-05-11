@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Up_Border
+  - Down_Border
+  - P1_Border
+  - P2_Border
+  - Player1
+  - Player2
+  - Ball
   layers:
   - Default
   - TransparentFX
