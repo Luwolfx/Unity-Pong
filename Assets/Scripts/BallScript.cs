@@ -65,7 +65,6 @@ public class BallScript : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
 
-        print("collided");
         switch(c.gameObject.tag)
         {
             case "Up_Border":

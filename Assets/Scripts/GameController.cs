@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour
     public GameObject[] statusText;
     public GameObject[] balls;
     public GameObject ball;
+    public GameObject win;
     private int ballInUse = 0;
     private int ballSelected = 0;
     #endregion
@@ -43,6 +44,7 @@ public class GameController : MonoBehaviour
         //Set the instance!
         if(_Instance == null) _Instance = this; else Destroy(this);
     }
+    
     void Start() 
     {
         //Seta a vida inicial!
@@ -53,7 +55,6 @@ public class GameController : MonoBehaviour
     {
         Game_Status_Gameplay();
     }
-
 
     void Game_Status_Gameplay()
     {
@@ -176,7 +177,7 @@ public class GameController : MonoBehaviour
 
                     BallScript._Instance.launched = true;
                     status = Game_Status.BALL_IN_GAME;
-                    player2.Object.transform.rotation = Quaternion.Euler(0f,0f,0f);
+                    player2.Object.transform.rotation = Quaternion.Euler(180f,0f,180f);
                 }
             break;
             #endregion
@@ -236,6 +237,15 @@ public class GameController : MonoBehaviour
 
         //Seta o status como None
         status = Game_Status.NONE;
+
+        if(player1.life <= 0 || player2.life <= 0)
+        {
+            string winText = "";
+            if(player1.life <= 0) winText = "Player2 Ganhou!"; else winText = "Player1 Ganhou!";
+
+            GameObject w = Instantiate(win);
+            w.GetComponent<WinScreen>().Win(winText);
+        }
     }
 
     public void Change_Ball(int b)

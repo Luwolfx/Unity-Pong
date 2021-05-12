@@ -4818,6 +4818,7 @@ MonoBehaviour:
   - {fileID: 1357117410824738270, guid: 66604d60235dfd94d888d25b6006706c, type: 3}
   - {fileID: 1357117410824738270, guid: eab9323fa4c54a64fab3261a1b6f32dc, type: 3}
   ball: {fileID: 0}
+  win: {fileID: 4963340812369129641, guid: ee3615444e968af43b50375f7b978efc, type: 3}
 --- !u!1 &1042618627
 GameObject:
   m_ObjectHideFlags: 0
