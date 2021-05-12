@@ -75,6 +75,10 @@ public class BallScript : MonoBehaviour
                 if(canBounseTimes > 0) canBounseTimes--;
                 y = 1;
             break;
+            case "Obstacle":
+                if(canBounseTimes > 0) canBounseTimes--;
+                x *= -1;
+            break;
             case "P1_Border":
                 GameController._Instance.Ball_Destroyed("Player1", fullDamage);
                 Destroy(gameObject);
