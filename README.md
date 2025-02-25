@@ -1,7 +1,12 @@
 # Unity Local Multiplayer Pong
-A classic Pong game reimagined with local multiplayer and a variety of balls, each with unique gameplay-altering effects, developed in 2021.
+A classic Pong game reimagined with local multiplayer and a variety of balls, each with unique gameplay-altering effects, developed in 2021.<br>
+<br>
 
-## Controls
+## PLAY
+- View project on [Itch.io](https://luwolf77.itch.io/luwolfs-pong)<br>
+- [Download for Windows](https://github.com/Luwolfx/Unity-Pong/releases/tag/1.0)
+
+## HOW TO PLAY
 <b>Player1</b> - W, S
 <br>
 <b>Player2</b> - UpArrow, DownArrow
