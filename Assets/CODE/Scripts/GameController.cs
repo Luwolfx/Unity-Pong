@@ -66,8 +66,8 @@ public class GameController : MonoBehaviour
             if(!statusText[0].activeInHierarchy)
             {
                 Change_Text(0);
-                player1.lifeText.text = "Vida: "+player1.life+"%";
-                player2.lifeText.text = "Vida: "+player2.life+"%";
+                player1.lifeText.text = "Life: "+player1.life+"%";
+                player2.lifeText.text = "Life: "+player2.life+"%";
             }
 
             //SETA A BOLA COMO NULA!
@@ -241,7 +241,7 @@ public class GameController : MonoBehaviour
         if(player1.life <= 0 || player2.life <= 0)
         {
             string winText = "";
-            if(player1.life <= 0) winText = "Player2 Ganhou!"; else winText = "Player1 Ganhou!";
+            if(player1.life <= 0) winText = "Player2 wins!"; else winText = "Player1 wins!";
 
             GameObject w = Instantiate(win);
             w.GetComponent<WinScreen>().Win(winText);
